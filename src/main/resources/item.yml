@@ -1,0 +1,40 @@
+Items:
+  - Test1
+  - Test2
+  - Test3
+  - Test4
+
+Test1:
+  Material: PAPER
+  Name: Test1
+  Lore:
+    - ホームの枠の最大値を3にあげるアイテム
+  Glow: true
+  Submit: true
+  SubmitNum: 3
+
+Test2:
+  Material: PAPER
+  Name: Test2
+  Lore:
+    - ホームの枠の最大値を4にあげるアイテム
+  Glow: true
+  Submit: true
+  SubmitNum: 4
+
+Test3:
+  Material: PAPER
+  Name: Test3
+  Lore:
+    - ホームの枠の最大値を5にあげるアイテム
+  Glow: true
+  Submit: true
+  SubmitNum: 5
+
+Test4:
+  Material: PAPER
+  Name: Test4
+  Lore:
+    - かまどテストアイテム
+  Glow: true
+  Submit: false

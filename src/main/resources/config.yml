@@ -1,0 +1,17 @@
+CostEnable: true
+SpecifyTime: true
+Materials:
+  - EMERALD
+  - DIAMOND
+EMERALD:
+  Amount: 3
+DIAMOND:
+  Amount: 3
+Level: 3
+TpTime: 5
+DefaultSubmit: 2
+MaxSubmit: 5
+
+TPMenuImageURL: https://media.discordapp.net/attachments/957673645159907338/957936255834914846/homemenu.png?width=230&height=230
+AddMenuImageURL: https://media.discordapp.net/attachments/957673645159907338/957936255449047090/homeadd.png?width=230&height=230
+RemoveMenuImageURL: https://media.discordapp.net/attachments/957673645159907338/957936255654576149/homeremove.png?width=230&height=230

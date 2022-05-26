@@ -1,0 +1,42 @@
+Test1:
+  RecipeType: CRAFT
+  First: " D "
+  Second: "DPD"
+  Third: " D "
+  D:
+    Type: Material
+    Item: DIAMOND
+  P:
+    Type: Material
+    Item: PAPER
+
+Test2:
+  RecipeType: CRAFT
+  First: "DDD"
+  Second: "DPD"
+  Third: "DDD"
+  D:
+    Type: Material
+    Item: DIAMOND_BLOCK
+  P:
+    Type: Item
+    Item: Test1
+
+Test3:
+  RecipeType: CRAFT
+  First: "NNN"
+  Second: "NPN"
+  Third: "NNN"
+  N:
+    Type: Material
+    Item: NETHERITE_INGOT
+  P:
+    Type: Item
+    Item: Test2
+
+Test4:
+  RecipeType: FURNACE
+  Type: Item
+  Item: Test3
+  Exp: 10
+  CookingTime: 10

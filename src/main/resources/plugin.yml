@@ -1,0 +1,8 @@
+name: Home
+version: '${project.version}'
+main: info.ahaha.home.Home
+api-version: 1.17
+depend:
+  - floodgate
+commands:
+  home:
