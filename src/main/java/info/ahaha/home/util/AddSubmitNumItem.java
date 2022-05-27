@@ -31,7 +31,7 @@ public class AddSubmitNumItem {
             player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.RED + "登録枠の上限が最大値のため枠を増やすことができませんでした！");
             return;
         }
-
+        item.setAmount(item.getAmount() - 1);
         player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.GREEN + "登録枠の上限が" + playerData.getMaxSubmitNum() + "になりました！");
     }
 
@@ -42,9 +42,9 @@ public class AddSubmitNumItem {
         return null;
     }
 
-    public static ItemData getItemData(String id){
-        for (ItemData data : Home.itemData){
-            if (data.getId().equalsIgnoreCase(id))return data;
+    public static ItemData getItemData(String id) {
+        for (ItemData data : Home.itemData) {
+            if (data.getId().equalsIgnoreCase(id)) return data;
         }
         return null;
     }
@@ -60,7 +60,7 @@ public class AddSubmitNumItem {
         private int submitNum = -1;
         private final ItemStack item;
 
-        public ItemData(String id,Material material, String name, List<String> lore, boolean glow, boolean submit,int submitNum) {
+        public ItemData(String id, Material material, String name, List<String> lore, boolean glow, boolean submit, int submitNum) {
             this.id = id;
             this.material = material;
             this.name = name;
@@ -68,7 +68,7 @@ public class AddSubmitNumItem {
             this.glow = glow;
             this.submit = submit;
             if (submitNum != 0)
-            this.submitNum = submitNum;
+                this.submitNum = submitNum;
             item = new ItemStack(material);
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(name);

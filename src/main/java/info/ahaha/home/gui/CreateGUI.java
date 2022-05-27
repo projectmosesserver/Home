@@ -5,6 +5,8 @@ import info.ahaha.home.HomeData;
 import info.ahaha.home.PlayerData;
 import info.ahaha.home.util.Config;
 import org.bukkit.*;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
