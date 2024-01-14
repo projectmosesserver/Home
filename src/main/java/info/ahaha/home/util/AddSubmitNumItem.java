@@ -1,6 +1,7 @@
 package info.ahaha.home.util;
 
 import info.ahaha.home.Home;
+import info.ahaha.home.MasterData;
 import info.ahaha.home.PlayerData;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,7 +22,7 @@ public class AddSubmitNumItem {
         if (data == null) return;
         if (data.getSubmitNum() == -1) return;
         if (!data.isSubmit()) return;
-        PlayerData playerData = Home.plugin.getPlayerData(player);
+        MasterData playerData = Home.plugin.getMasterData(player);
         if (playerData == null) return;
         if (playerData.getMaxSubmitNum() + 1 != data.getSubmitNum()) {
             player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.RED + "このアイテムは枠上限を" + data.getSubmitNum() + "に増やすアイテムです！");
@@ -33,6 +34,7 @@ public class AddSubmitNumItem {
         }
         item.setAmount(item.getAmount() - 1);
         player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.GREEN + "登録枠の上限が" + playerData.getMaxSubmitNum() + "になりました！");
+        Home.plugin.getDatabaseUtil().update(playerData);
     }
 
     public static ItemData getItemData(ItemStack item) {

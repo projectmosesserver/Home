@@ -1,8 +1,6 @@
 package info.ahaha.home.listener;
 
-import info.ahaha.home.Home;
-import info.ahaha.home.HomeData;
-import info.ahaha.home.PlayerData;
+import info.ahaha.home.*;
 import info.ahaha.home.gui.CreateGUI;
 import info.ahaha.home.gui.GUI;
 import info.ahaha.home.gui.RemoveGUI;
@@ -33,12 +31,13 @@ public class TPMenuListener implements Listener {
         if (!e.getClickedInventory().equals(e.getView().getTopInventory())) return;
         Player player = (Player) e.getWhoClicked();
         if (tpPlayers.contains(player)) return;
-        PlayerData data = Home.plugin.getPlayerData(player);
+        MasterData data = Home.plugin.getMasterData(player);
         if (data == null) {
-            Home.data.add(new PlayerData(player.getUniqueId()));
-            data = Home.plugin.getPlayerData(player);
+            data = new MasterData(player.getUniqueId());
+            Home.plugin.addMasterData(data);
+            Home.plugin.getDatabaseUtil().insert(data);
         }
-        HomeData homeData = data.getData().get(e.getSlot());
+        HomeMasterData homeData = data.getHomeMasterData().get(e.getSlot());
         if (homeData == null) return;
         if (Config.isCostEnable()) {
             if (data.isCostMaterial()) {
@@ -90,7 +89,7 @@ public class TPMenuListener implements Listener {
                 if (!Config.isSpecifyTime()) time = 0;
                 if (time < 1) {
                     player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.GREEN + homeData.getName() + "にテレポートしました！");
-                    homeData.teleport(player);
+                    homeData.warp(player);
                     player.playEffect(EntityEffect.TELEPORT_ENDER);
                     player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT,2f,1f);
                     tpPlayers.remove(player);

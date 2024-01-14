@@ -15,3 +15,13 @@ MaxSubmit: 5
 TPMenuImageURL: https://media.discordapp.net/attachments/957673645159907338/957936255834914846/homemenu.png?width=230&height=230
 AddMenuImageURL: https://media.discordapp.net/attachments/957673645159907338/957936255449047090/homeadd.png?width=230&height=230
 RemoveMenuImageURL: https://media.discordapp.net/attachments/957673645159907338/957936255654576149/homeremove.png?width=230&height=230
+
+ServerName: survival
+
+MySQL:
+  Host: NONE
+  Port: 3306
+  User: root
+  Password: NONE
+  DBName: NONE
+  Table: Home

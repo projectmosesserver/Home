@@ -1,8 +1,6 @@
 package info.ahaha.home.gui;
 
-import info.ahaha.home.Home;
-import info.ahaha.home.HomeData;
-import info.ahaha.home.PlayerData;
+import info.ahaha.home.*;
 import info.ahaha.home.util.Config;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
@@ -61,17 +59,18 @@ public class CreateGUI {
             CustomFormResponse response = form.parseResponse(s);
             if (response.isCorrect()) {
                 if (response.getInput(0) != null) {
-                    PlayerData data = Home.plugin.getPlayerData(player);
+                    MasterData data = Home.plugin.getMasterData(player);
                     if (data == null) return;
-                    for (HomeData homeData : data.getData()) {
+                    for (HomeData homeData : data.getHomeMasterData()) {
                         if (homeData.getName().equalsIgnoreCase(response.getInput(0))) {
                             player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.RED + response.getInput(0) + "はすでに登録されています！");
                             return;
                         }
                     }
-                    if (data.addHome(response.getInput(0), player.getLocation()))
+                    if (data.addMasterHome(response.getInput(0), player.getLocation())){
                         player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.GREEN + response.getInput(0) + "を登録しました！");
-                    else {
+                        Home.plugin.getDatabaseUtil().update(data);
+                    } else {
                         player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.RED + "登録枠が上限値のため登録できませんでした！");
                     }
                 }
@@ -83,29 +82,30 @@ public class CreateGUI {
     public SimpleForm getHomeForm(Player player) {
         SimpleForm.Builder builder = SimpleForm.builder();
         builder.title(ChatColor.GOLD + "Home");
-        PlayerData data = Home.plugin.getPlayerData(player);
+        MasterData data = Home.plugin.getMasterData(player);
         if (data == null){
-            Home.data.add(new PlayerData(player.getUniqueId()));
-            data = Home.plugin.getPlayerData(player);
+            data = new MasterData(player.getUniqueId());
+            Home.data.add(data);
+            Home.plugin.getDatabaseUtil().insert(data);
         }
-        if (data.getData().isEmpty()) {
+        if (data.getHomeMasterData().isEmpty()) {
             builder.content(ChatColor.GREEN + "まだHomeが登録されていません！");
             builder.responseHandler((form, s) -> {
                 SimpleFormResponse response = form.parseResponse(s);
             });
         } else {
             builder.content(ChatColor.GREEN + "移動先のボタンを選択してください！\n\n");
-            for (HomeData homeData : data.getData()) {
+            for (HomeMasterData homeData : data.getHomeMasterData()) {
                 builder.button(homeData.getName());
             }
-            PlayerData finalData = data;
+            MasterData finalData = data;
             builder.responseHandler((form, s) -> {
                 SimpleFormResponse response = form.parseResponse(s);
                 if (response.isCorrect()) {
-                    HomeData homeData = null;
+                    HomeMasterData homeData = null;
                     for (int i = 0; i < finalData.getData().size(); i++) {
                         if (response.getClickedButtonId() == i) {
-                            homeData = finalData.getData().get(i);
+                            homeData = finalData.getHomeMasterData().get(i);
                             break;
                         }
                     }
@@ -150,7 +150,7 @@ public class CreateGUI {
                                 }
                             }
                         }
-                        HomeData finalHomeData = homeData;
+                        HomeMasterData finalHomeData = homeData;
                         new BukkitRunnable() {
                             int time = Config.getTpTime();
 
@@ -159,7 +159,7 @@ public class CreateGUI {
                                 if (!Config.isSpecifyTime()) time = 0;
                                 if (time < 1) {
                                     player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.GREEN + finalHomeData.getName() + "にテレポートしました！");
-                                    finalHomeData.teleport(player);
+                                    finalHomeData.warp(player);
                                     player.playEffect(EntityEffect.TELEPORT_ENDER);
                                     player.playSound(player.getLocation(),Sound.ENTITY_ENDERMAN_TELEPORT,2f,1f);
                                     this.cancel();
@@ -180,12 +180,13 @@ public class CreateGUI {
     public CustomForm getRemoveHomeForm(Player player) {
         CustomForm.Builder builder = CustomForm.builder();
         builder.title(ChatColor.GOLD + "RemoveHome");
-        PlayerData data = Home.plugin.getPlayerData(player);
+        MasterData data = Home.plugin.getMasterData(player);
         if (data == null){
-            Home.data.add(new PlayerData(player.getUniqueId()));
-            data = Home.plugin.getPlayerData(player);
+            data = new MasterData(player.getUniqueId());
+            Home.data.add(data);
+            Home.plugin.getDatabaseUtil().insert(data);
         }
-        if (data.getData().isEmpty()) {
+        if (data.getHomeMasterData().isEmpty()) {
             builder.label(ChatColor.GREEN + "まだHomeが登録されていません！");
             builder.responseHandler((form, s) -> {
                 CustomFormResponse response = form.parseResponse(s);
@@ -194,18 +195,19 @@ public class CreateGUI {
         } else {
             DropdownComponent.Builder builder1 = DropdownComponent.builder().text("削除する項目を選択してください");
 
-            for (HomeData homeData : data.getData()) {
+            for (HomeMasterData homeData : data.getHomeMasterData()) {
                 builder1.option(homeData.getName());
             }
             builder.dropdown(builder1);
-            PlayerData finalData = data;
+            MasterData finalData = data;
             builder.responseHandler((form, s) -> {
                 CustomFormResponse response = form.parseResponse(s);
                 if (response.isCorrect()) {
                     int i = 0;
-                    for (HomeData homeData : finalData.getData()) {
+                    for (HomeMasterData homeData : finalData.getHomeMasterData()) {
                         if (response.getDropdown(0) == i){
-                            finalData.removeHome(homeData.getName());
+                            finalData.removeMasterHome(homeData.getName());
+                            Home.plugin.getDatabaseUtil().update(finalData);
                             player.sendMessage(ChatColor.GOLD+"[ HomePlugin ] "+ChatColor.GREEN+homeData.getName()+"を削除しました！");
                             break;
                         }
@@ -249,12 +251,13 @@ public class CreateGUI {
     public GUI getRemoveGUI(Player player) {
         RemoveGUI gui = new RemoveGUI(null);
         Inventory inv = Bukkit.createInventory(gui, 54, ChatColor.BLUE + "" + ChatColor.BOLD + player.getName() + "'s RemoveMenu");
-        PlayerData data = Home.plugin.getPlayerData(player);
+        MasterData data = Home.plugin.getMasterData(player);
         if (data == null) {
-            data = new PlayerData(player.getUniqueId());
+            data = new MasterData(player.getUniqueId());
+            Home.plugin.getDatabaseUtil().insert(data);
             Home.data.add(data);
         }
-        for (HomeData homeData : data.getData()) {
+        for (HomeMasterData homeData : data.getHomeMasterData()) {
             ItemStack home = new ItemStack(Material.ENDER_EYE);
             ItemMeta meta = home.getItemMeta();
             meta.setDisplayName("§6§n" + homeData.getName());
@@ -278,12 +281,13 @@ public class CreateGUI {
     public GUI getTPMenuGUI(Player player) {
         TPMenuGUI gui = new TPMenuGUI(null);
         Inventory inv = Bukkit.createInventory(gui, 54, ChatColor.BLUE + "" + ChatColor.BOLD + player.getName() + "'s Home");
-        PlayerData data = Home.plugin.getPlayerData(player);
+        MasterData data = Home.plugin.getMasterData(player);
         if (data == null) {
-            data = new PlayerData(player.getUniqueId());
+            data = new MasterData(player.getUniqueId());
+            Home.plugin.getDatabaseUtil().insert(data);
             Home.data.add(data);
         }
-        for (HomeData homeData : data.getData()) {
+        for (HomeMasterData homeData : data.getHomeMasterData()) {
             ItemStack home = new ItemStack(Material.ENDER_EYE);
             ItemMeta meta = home.getItemMeta();
             meta.setDisplayName("§6§n" + homeData.getName());
