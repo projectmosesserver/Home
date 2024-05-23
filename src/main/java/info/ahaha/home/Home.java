@@ -77,8 +77,6 @@ public final class Home extends JavaPlugin {
             }
         }
 
-        //TODO Add remove の際にupdateするように
-
         getServer().getPluginManager().registerEvents(new SubmitListener(), this);
         getServer().getPluginManager().registerEvents(new JoinQuitListener(), this);
         getServer().getPluginManager().registerEvents(new AddHomeListener(), this);

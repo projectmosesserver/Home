@@ -1,6 +1,8 @@
 package info.ahaha.home.cmd;
 
 import info.ahaha.home.Home;
+import info.ahaha.home.HomeMasterData;
+import info.ahaha.home.MasterData;
 import info.ahaha.home.PlayerData;
 import info.ahaha.home.gui.CreateGUI;
 import org.bukkit.ChatColor;
@@ -30,12 +32,14 @@ public class Cmd implements CommandExecutor {
             return true;
         } else {
             if (args[0].equalsIgnoreCase("cost")) {
-                PlayerData data = Home.plugin.getPlayerData(player);
+                MasterData data = Home.plugin.getMasterData(player);
                 if (data == null) {
-                    data = new PlayerData(player.getUniqueId());
+                    data = new MasterData(player.getUniqueId());
                     Home.data.add(data);
+                    Home.plugin.getDatabaseUtil().insert(data);
                 }
                 data.setCostMaterial();
+                Home.plugin.getDatabaseUtil().update(data);
                 if (data.isCostMaterial()) {
                     player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.GREEN + "コストが素材消費に変更されました！");
                 }else {
