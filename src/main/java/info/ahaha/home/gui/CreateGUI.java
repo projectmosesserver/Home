@@ -85,7 +85,7 @@ public class CreateGUI {
         MasterData data = Home.plugin.getMasterData(player);
         if (data == null){
             data = new MasterData(player.getUniqueId());
-            Home.data.add(data);
+            Home.plugin.addMasterData(data);
             Home.plugin.getDatabaseUtil().insert(data);
         }
         if (data.getHomeMasterData().isEmpty()) {
@@ -103,7 +103,7 @@ public class CreateGUI {
                 SimpleFormResponse response = form.parseResponse(s);
                 if (response.isCorrect()) {
                     HomeMasterData homeData = null;
-                    for (int i = 0; i < finalData.getData().size(); i++) {
+                    for (int i = 0; i < finalData.getHomeMasterData().size(); i++) {
                         if (response.getClickedButtonId() == i) {
                             homeData = finalData.getHomeMasterData().get(i);
                             break;
@@ -111,7 +111,7 @@ public class CreateGUI {
                     }
                     if (homeData != null){
                         if (Config.isCostEnable()) {
-                            if (finalData.isCostMaterial()) {
+                            if (finalData.getPlayerData().isCostMaterial()) {
                                 Map<Material, Integer> currents = new HashMap<>();
                                 for (Material material : Config.getCostMaterials().keySet()) {
                                     ItemStack item = new ItemStack(material);
@@ -183,7 +183,7 @@ public class CreateGUI {
         MasterData data = Home.plugin.getMasterData(player);
         if (data == null){
             data = new MasterData(player.getUniqueId());
-            Home.data.add(data);
+            Home.plugin.addMasterData(data);
             Home.plugin.getDatabaseUtil().insert(data);
         }
         if (data.getHomeMasterData().isEmpty()) {
@@ -255,7 +255,7 @@ public class CreateGUI {
         if (data == null) {
             data = new MasterData(player.getUniqueId());
             Home.plugin.getDatabaseUtil().insert(data);
-            Home.data.add(data);
+            Home.plugin.addMasterData(data);
         }
         for (HomeMasterData homeData : data.getHomeMasterData()) {
             ItemStack home = new ItemStack(Material.ENDER_EYE);
@@ -285,7 +285,7 @@ public class CreateGUI {
         if (data == null) {
             data = new MasterData(player.getUniqueId());
             Home.plugin.getDatabaseUtil().insert(data);
-            Home.data.add(data);
+            Home.plugin.addMasterData(data);
         }
         for (HomeMasterData homeData : data.getHomeMasterData()) {
             ItemStack home = new ItemStack(Material.ENDER_EYE);

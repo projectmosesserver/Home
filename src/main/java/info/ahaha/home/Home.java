@@ -108,7 +108,7 @@ public final class Home extends JavaPlugin {
 
     public MasterData getMasterData(Player player) {
         for (MasterData data : masterData) {
-            if (data.getUuid().equals(player.getUniqueId())) return data;
+            if (data.getPlayerData().getUuid().equals(player.getUniqueId())) return data;
         }
         return null;
     }

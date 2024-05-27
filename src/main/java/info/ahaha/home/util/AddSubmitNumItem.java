@@ -24,16 +24,16 @@ public class AddSubmitNumItem {
         if (!data.isSubmit()) return;
         MasterData playerData = Home.plugin.getMasterData(player);
         if (playerData == null) return;
-        if (playerData.getMaxSubmitNum() + 1 != data.getSubmitNum()) {
+        if (playerData.getPlayerData().getMaxSubmitNum() + 1 != data.getSubmitNum()) {
             player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.RED + "このアイテムは枠上限を" + data.getSubmitNum() + "に増やすアイテムです！");
             return;
         }
-        if (!playerData.addSubmitNum()) {
+        if (!playerData.getPlayerData().addSubmitNum()) {
             player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.RED + "登録枠の上限が最大値のため枠を増やすことができませんでした！");
             return;
         }
         item.setAmount(item.getAmount() - 1);
-        player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.GREEN + "登録枠の上限が" + playerData.getMaxSubmitNum() + "になりました！");
+        player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.GREEN + "登録枠の上限が" + playerData.getPlayerData().getMaxSubmitNum() + "になりました！");
         Home.plugin.getDatabaseUtil().update(playerData);
     }
 

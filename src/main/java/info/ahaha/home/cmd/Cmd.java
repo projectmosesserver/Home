@@ -35,12 +35,12 @@ public class Cmd implements CommandExecutor {
                 MasterData data = Home.plugin.getMasterData(player);
                 if (data == null) {
                     data = new MasterData(player.getUniqueId());
-                    Home.data.add(data);
+                    Home.plugin.addMasterData(data);
                     Home.plugin.getDatabaseUtil().insert(data);
                 }
-                data.setCostMaterial();
+                data.getPlayerData().setCostMaterial();
                 Home.plugin.getDatabaseUtil().update(data);
-                if (data.isCostMaterial()) {
+                if (data.getPlayerData().isCostMaterial()) {
                     player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.GREEN + "コストが素材消費に変更されました！");
                 }else {
                     player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.GREEN + "コストが経験値に変更されました！");

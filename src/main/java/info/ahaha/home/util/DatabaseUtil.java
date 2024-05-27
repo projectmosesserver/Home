@@ -44,7 +44,7 @@ public class DatabaseUtil {
 
     public void insert(MasterData data) {
         try {
-            lib.insert(table, new ColumnData(1, data.getUuid().toString()), new ColumnData(2, new ConvertJson().objectToJson(data)));
+            lib.insert(table, new ColumnData(1, data.getPlayerData().getUuid().toString()), new ColumnData(2, new ConvertJson().objectToJson(data)));
         } catch (SQLException e) {
             Bukkit.getLogger().info("InsertError... データをアップデートします");
             update(data);
@@ -53,7 +53,7 @@ public class DatabaseUtil {
 
     public void update(MasterData data) {
         try {
-            lib.update(table, new WhereKey("uuid", data.getUuid().toString()), new UpdateData("data", new ConvertJson().objectToJson(data)));
+            lib.update(table, new WhereKey("uuid", data.getPlayerData().getUuid().toString()), new UpdateData("data", new ConvertJson().objectToJson(data)));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -61,7 +61,7 @@ public class DatabaseUtil {
 
     public void delete(MasterData data) {
         try {
-            lib.delete(table, new WhereKey("uuid", data.getUuid().toString()));
+            lib.delete(table, new WhereKey("uuid", data.getPlayerData().getUuid().toString()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

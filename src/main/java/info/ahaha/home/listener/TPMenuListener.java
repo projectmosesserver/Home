@@ -40,7 +40,7 @@ public class TPMenuListener implements Listener {
         HomeMasterData homeData = data.getHomeMasterData().get(e.getSlot());
         if (homeData == null) return;
         if (Config.isCostEnable()) {
-            if (data.isCostMaterial()) {
+            if (data.getPlayerData().isCostMaterial()) {
                 Map<Material, Integer> currents = new HashMap<>();
                 for (Material s : Config.getCostMaterials().keySet()) {
                     ItemStack item = new ItemStack(s);
