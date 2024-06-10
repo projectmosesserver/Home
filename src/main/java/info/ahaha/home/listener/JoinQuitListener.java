@@ -2,6 +2,7 @@ package info.ahaha.home.listener;
 
 import info.ahaha.home.Home;
 import info.ahaha.home.MasterData;
+import info.ahaha.home.util.SaveandLoad;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -13,8 +14,8 @@ public class JoinQuitListener implements Listener {
     public void onJoin(PlayerJoinEvent e){
         MasterData data = Home.plugin.getDatabaseUtil().getMasterData(e.getPlayer().getUniqueId());
         if (data == null){
-            data = new MasterData(e.getPlayer().getUniqueId());
-            Home.plugin.getDatabaseUtil().insert(data);
+            SaveandLoad.load(e.getPlayer());
+            return;
         }
         Home.plugin.addMasterData(data);
     }

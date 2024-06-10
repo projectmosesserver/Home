@@ -5,6 +5,7 @@ import info.ahaha.home.HomeMasterData;
 import info.ahaha.home.MasterData;
 import info.ahaha.home.PlayerData;
 import info.ahaha.home.gui.CreateGUI;
+import info.ahaha.home.gui.MenuGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

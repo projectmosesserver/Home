@@ -1,12 +1,14 @@
 package info.ahaha.home.listener;
 
-import info.ahaha.home.*;
-import info.ahaha.home.gui.CreateGUI;
-import info.ahaha.home.gui.GUI;
-import info.ahaha.home.gui.RemoveGUI;
+import info.ahaha.home.Home;
+import info.ahaha.home.HomeMasterData;
+import info.ahaha.home.MasterData;
 import info.ahaha.home.gui.TPMenuGUI;
 import info.ahaha.home.util.Config;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.EntityEffect;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -37,6 +39,7 @@ public class TPMenuListener implements Listener {
             Home.plugin.addMasterData(data);
             Home.plugin.getDatabaseUtil().insert(data);
         }
+        if (data.getHomeMasterData().size() < e.getSlot()) return;
         HomeMasterData homeData = data.getHomeMasterData().get(e.getSlot());
         if (homeData == null) return;
         if (Config.isCostEnable()) {
@@ -91,7 +94,7 @@ public class TPMenuListener implements Listener {
                     player.sendMessage(ChatColor.GOLD + "[ Home ] " + ChatColor.GREEN + homeData.getName() + "にテレポートしました！");
                     homeData.warp(player);
                     player.playEffect(EntityEffect.TELEPORT_ENDER);
-                    player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT,2f,1f);
+                    player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 2f, 1f);
                     tpPlayers.remove(player);
                     this.cancel();
                     return;
