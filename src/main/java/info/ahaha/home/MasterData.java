@@ -34,6 +34,17 @@ public class MasterData implements Serializable {
         return true;
     }
 
+    public boolean renameMasterData(String old, String newName){
+        for (HomeMasterData data : homeMasterData){
+            if (data.getName().equalsIgnoreCase(old)){
+                data.setName(newName);
+                Home.plugin.getDatabaseUtil().update(this);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean removeMasterHome(String homeName) {
         return homeMasterData.removeIf(h -> h.getName().equalsIgnoreCase(homeName));
     }

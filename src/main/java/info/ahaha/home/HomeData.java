@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class HomeData implements Serializable {
 
-    private final String name;
+    private String name;
     private final String world;
     private final double x;
     private final double y;
@@ -29,6 +29,10 @@ public class HomeData implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getWorld() {

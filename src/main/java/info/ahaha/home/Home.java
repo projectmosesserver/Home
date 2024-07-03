@@ -88,6 +88,7 @@ public final class Home extends JavaPlugin {
         getServer().getMessenger().registerIncomingPluginChannel(this, "playermanagement:spigot", new TeleportListener());
 
         getCommand("home").setExecutor(new Cmd());
+        getCommand("home").setTabCompleter(new Cmd());
 
     }
 
